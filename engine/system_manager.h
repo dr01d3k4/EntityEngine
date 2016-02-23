@@ -21,12 +21,27 @@ void freeSystemManager(struct SystemManager* systemManager);
 bool priorityInRange(struct SystemManager* systemManager, int priority);
 
 
+// Returns then next free slot available after start (or start if start is free)
+// If there are no free slots, returns systemCount
+int getNextFreeSlot(struct SystemManager* systemManager, int start);
+
+
+// Calls getNextFreeSlot with start of 0
+int getFirstFreeSlot(struct SystemManager* systemManager);
+
+
 // If there already is a system with this priority, returns false
 // Else puts the system into the manager and returns true
 bool addSystem(struct SystemManager* systemManager, SystemUpdate system, int priority);
 
 
-// Adds a system in the next available priority slot
+// If there already is a system with this priority, shifts all the following systems up to fit this one in
+// If there isn't enough space for all systems (i.e. the last one gets cut off), returns false
+// Else returns true
+bool addSystemShiftUp(struct SystemManager* systemManager, SystemUpdate system, int priority);
+
+
+// Adds a system in the first available priority slot
 // Returns the priority it was placed in, or -1 if there are no free slots
 int addNextSystem(struct SystemManager* systemManager, SystemUpdate system);
 
